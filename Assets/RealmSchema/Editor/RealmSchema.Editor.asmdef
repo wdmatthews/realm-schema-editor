@@ -1,0 +1,18 @@
+{
+    "name": "RealmSchema.Editor",
+    "rootNamespace": "RealmSchema.Editor",
+    "references": [
+        "GUID:248f4ff3a4cb447e6bd7901a485cab89"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

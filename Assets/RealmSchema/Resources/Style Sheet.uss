@@ -1,0 +1,15 @@
+GridBackground {
+    --grid-background-color: #212121;
+    --line-color: #424242;
+    --thick-line-color: #616161;
+    --spacing: 10;
+}
+
+#node-border {
+    background-color: #212121;
+}
+
+.field-group {
+    flex-direction: row;
+    padding: 0px;
+}
