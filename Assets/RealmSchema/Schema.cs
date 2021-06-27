@@ -1,16 +1,13 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace RealmSchema
 {
     [System.Serializable]
-    public class Schema
+    public class Schema : NodeData
     {
         public string CollectionName = "";
         public List<SchemaField> Fields = new List<SchemaField>();
 
-        public string Guid = "";
-        public Vector2 Position = Vector2.zero;
         public int NextFieldIndex = 0;
 
         public Schema(string name)
@@ -19,12 +16,12 @@ namespace RealmSchema
         }
 
         public Schema(Schema schema)
+            : base(schema.Guid, schema.Position)
         {
             CollectionName = schema.CollectionName;
-            Guid = schema.Guid;
-            Position = schema.Position;
-            NextFieldIndex = schema.NextFieldIndex;
             Fields = new List<SchemaField>();
+
+            NextFieldIndex = schema.NextFieldIndex;
 
             foreach (SchemaField field in schema.Fields)
             {

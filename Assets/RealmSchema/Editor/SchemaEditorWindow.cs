@@ -16,8 +16,9 @@ namespace RealmSchema.Editor
         private bool _wasLoaded = false;
 
         private Toolbar _toolbar = null;
-        private ToolbarButton _addSchemaButton = null;
         private ToolbarButton _saveButton = null;
+        private ToolbarButton _addRoleButton = null;
+        private ToolbarButton _addSchemaButton = null;
 
         [OnOpenAsset(1)]
         public static bool ShowWindow(int instanceId, int line)
@@ -51,6 +52,10 @@ namespace RealmSchema.Editor
             _saveButton.text = "Save";
             _toolbar.Add(_saveButton);
 
+            _addRoleButton = new ToolbarButton(() => _graphView.AddRole(Vector2.zero));
+            _addRoleButton.text = "Add Role";
+            _toolbar.Add(_addRoleButton);
+
             _addSchemaButton = new ToolbarButton(() => _graphView.AddSchema(Vector2.zero));
             _addSchemaButton.text = "Add Schema";
             _toolbar.Add(_addSchemaButton);
@@ -69,6 +74,13 @@ namespace RealmSchema.Editor
         private void Load()
         {
             if (!_data) return;
+            _graphView.NextRoleIndex = _data.NextRoleIndex;
+            _graphView.NextSchemaIndex = _data.NextSchemaIndex;
+
+            foreach (Role role in _data.Roles)
+            {
+                _graphView.AddRole(role.Position, role);
+            }
 
             foreach (Schema schema in _data.Schemas)
             {
@@ -94,18 +106,31 @@ namespace RealmSchema.Editor
 
         private void Save()
         {
+            _data.Roles.Clear();
             _data.Schemas.Clear();
             _data.Connections.Clear();
+            _data.NextRoleIndex = _graphView.NextRoleIndex;
+            _data.NextSchemaIndex = _graphView.NextSchemaIndex;
 
             foreach (Node node in _graphView.nodes)
             {
-                if (!(node is SchemaNode)) return;
-                SchemaNode schemaNode = (SchemaNode)node;
-                Schema schema = schemaNode.Schema;
-                schema.Guid = schemaNode.Guid;
-                schema.Position = schemaNode.GetPosition().position;
-                schema.NextFieldIndex = schemaNode.NextFieldIndex;
-                _data.Schemas.Add(schema);
+                if (node is RoleNode)
+                {
+                    RoleNode roleNode = (RoleNode)node;
+                    Role role = roleNode.Role;
+                    role.Guid = roleNode.Guid;
+                    role.Position = roleNode.GetPosition().position;
+                    _data.Roles.Add(role);
+                }
+                else if (node is SchemaNode)
+                {
+                    SchemaNode schemaNode = (SchemaNode)node;
+                    Schema schema = schemaNode.Schema;
+                    schema.Guid = schemaNode.Guid;
+                    schema.Position = schemaNode.GetPosition().position;
+                    schema.NextFieldIndex = schemaNode.NextFieldIndex;
+                    _data.Schemas.Add(schema);
+                }
             }
 
             foreach (Edge connection in _graphView.edges)

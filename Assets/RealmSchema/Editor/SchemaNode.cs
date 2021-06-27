@@ -17,10 +17,10 @@ namespace RealmSchema.Editor
         private TextField _collectionNameField = null;
         private Button _addFieldButton = null;
 
-        public SchemaNode(GraphView graphView, StyleSheet styleSheet, Vector2 position, Schema schema = null)
+        public SchemaNode(GraphView graphView, StyleSheet styleSheet, Vector2 position, Schema schema = null, int index = 0)
             : base(graphView, styleSheet, position)
         {
-            Schema = schema != null ? new Schema(schema) : new Schema("collection");
+            Schema = schema != null ? new Schema(schema) : new Schema($"collection_{index}");
             title = Schema.CollectionName;
 
             _collectionNameField = new TextField { value = Schema.CollectionName };
@@ -34,6 +34,10 @@ namespace RealmSchema.Editor
             _addFieldButton = new Button(() => AddField());
             _addFieldButton.text = "Add Field";
             mainContainer.Add(_addFieldButton);
+
+            AddPort("Document", Direction.Input, Port.Capacity.Multi, typeof(int));
+            Port documentOutput = AddPort("Document", Direction.Output, Port.Capacity.Multi, typeof(int));
+            documentOutput.portColor = documentOutput.disabledPortColor;
 
             if (schema != null)
             {

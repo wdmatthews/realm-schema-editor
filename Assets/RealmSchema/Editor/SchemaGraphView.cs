@@ -11,6 +11,9 @@ namespace RealmSchema.Editor
         private GridBackground _background = null;
         private StyleSheet _styleSheet = null;
 
+        public int NextRoleIndex = 0;
+        public int NextSchemaIndex = 0;
+
         public SchemaGraphView(StyleSheet styleSheet)
         {
             _styleSheet = styleSheet;
@@ -29,9 +32,16 @@ namespace RealmSchema.Editor
             this.StretchToParentSize();
         }
 
+        public void AddRole(Vector2 position, Role role = null)
+        {
+            AddElement(new RoleNode(this, _styleSheet, position, role, NextRoleIndex));
+            if (role == null) NextRoleIndex++;
+        }
+
         public void AddSchema(Vector2 position, Schema schema = null)
         {
-            AddElement(new SchemaNode(this, _styleSheet, position, schema));
+            AddElement(new SchemaNode(this, _styleSheet, position, schema, NextSchemaIndex));
+            if (schema == null) NextSchemaIndex++;
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -40,7 +50,8 @@ namespace RealmSchema.Editor
 
             foreach (Port port in ports)
             {
-                if (startPort != port && startPort.node != port.node && startPort.direction != port.direction)
+                if (startPort != port && startPort.node != port.node && startPort.direction != port.direction
+                    && (startPort.direction == Direction.Input || startPort.portName != "Document"))
                 {
                     compatiblePorts.Add(port);
                 }
