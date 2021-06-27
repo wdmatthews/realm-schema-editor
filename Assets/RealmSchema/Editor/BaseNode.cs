@@ -8,15 +8,15 @@ namespace RealmSchema.Editor
 {
     public class BaseNode : Node
     {
-        protected readonly string _guid = System.Guid.NewGuid().ToString();
+        public string Guid { get; protected set; } = System.Guid.NewGuid().ToString();
 
         protected GraphView _graphView = null;
 
-        public BaseNode(GraphView graphView, StyleSheet styleSheet, Vector2 position, Vector2 size)
+        public BaseNode(GraphView graphView, StyleSheet styleSheet, Vector2 position)
         {
             _graphView = graphView;
             styleSheets.Add(styleSheet);
-            SetPosition(new Rect(position, size));
+            SetPosition(new Rect(position, Vector2.zero));
         }
 
         /// <summary>

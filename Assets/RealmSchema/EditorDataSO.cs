@@ -7,5 +7,6 @@ namespace RealmSchema
     public class EditorDataSO : ScriptableObject
     {
         public List<Schema> Schemas = new List<Schema>();
+        public List<Connection> Connections = new List<Connection>();
     }
 }
