@@ -7,7 +7,21 @@ namespace RealmSchema
     {
         public static readonly List<string> Types = new List<string>
         {
+            "objectId",
             "string",
+            "bool",
+            "double",
+            "int",
+            "timestamp",
+            "date",
+            "array",
+            "object",
+            "decimal",
+            "long",
+            "regex",
+            "uuid",
+            "mixed",
+            "null",
         };
 
         public string Name = "";
